@@ -15,7 +15,7 @@
     <div class="lock-card">
       <img src="/assets/apias-scfv.png" alt="APIAS SCFV" />
       <h1>Relatório SCFV</h1>
-      <p>Digite o código de acesso. Você só precisa fazer isso uma vez neste aparelho.</p>
+      <p>Digite o código de acesso. Neste aparelho, você só precisa fazer isso uma vez.</p>
       <input id="pinInput" inputmode="numeric" autocomplete="one-time-code" placeholder="Código de acesso" />
       <button id="unlockBtn" class="btn primary big">Entrar</button>
       <div id="pinError" class="error"></div>
@@ -34,39 +34,42 @@
     <section class="hero">
       <div>
         <p class="eyebrow">RELATÓRIO MENSAL</p>
-        <h1>Preencha só o que mudou.</h1>
-        <p>O sistema salva automaticamente neste aparelho. No fim, toque em <b>Gerar PDF</b>.</p>
+        <h1>É só contar o que aconteceu.</h1>
+        <p>A IA organiza o texto e o sistema monta o PDF.</p>
       </div>
       <div class="save-state" id="saveState">Salvo ✓</div>
     </section>
 
     <section class="card">
-      <div class="section-title"><span class="step">1</span><div><h2>Dados do relatório</h2><p>Já deixamos os dados mais comuns preenchidos.</p></div></div>
+      <div class="section-title"><span class="step">1</span><div><h2>Qual relatório?</h2><p>Escolha o mês e a turma.</p></div></div>
       <div class="grid two">
         <label>Mês<select id="month"></select></label>
         <label>Ano<input id="year" type="number" min="2024" max="2100" /></label>
       </div>
-      <label>Modelo da turma
+      <label>Turma
         <select id="template">
           <option value="18-59">Apertados de Costura — 18 a 59 anos</option>
           <option value="60+">Apertados de Costura — 60+</option>
-          <option value="custom">Outro / personalizado</option>
+          <option value="custom">Outra oficina / turma</option>
         </select>
       </label>
-      <label>Projeto<input id="project" /></label>
-      <label>Oficina<input id="workshop" /></label>
-      <label>Objetivo<textarea id="objective" rows="4"></textarea></label>
-      <label>Responsável<input id="responsible" /></label>
+      <details class="advanced">
+        <summary>Alterar dados fixos <span>quase nunca precisa</span></summary>
+        <label>Projeto<input id="project" /></label>
+        <label>Oficina<input id="workshop" /></label>
+        <label>Objetivo<textarea id="objective" rows="4"></textarea></label>
+        <label>Responsável<input id="responsible" /></label>
+      </details>
     </section>
 
     <section class="card">
-      <div class="section-title"><span class="step">2</span><div><h2>O que aconteceu nas oficinas?</h2><p>Escreva do seu jeito ou use o microfone. A IA organiza o texto.</p></div></div>
+      <div class="section-title"><span class="step">2</span><div><h2>Conte o que aconteceu</h2><p>Pode escrever sem se preocupar com português bonito. Se preferir, toque em <b>Falar</b>.</p></div></div>
       <div id="activities"></div>
       <button id="addActivityBtn" class="btn secondary full">＋ Adicionar outra data</button>
     </section>
 
     <section class="card">
-      <div class="section-title"><span class="step">3</span><div><h2>Materiais utilizados</h2><p>Marque somente os materiais usados neste mês.</p></div></div>
+      <div class="section-title"><span class="step">3</span><div><h2>Materiais utilizados</h2><p>Toque nos materiais para marcar ou desmarcar.</p></div></div>
       <div id="materials" class="materials"></div>
       <div class="inline-add">
         <input id="newMaterial" placeholder="Outro material" />
@@ -75,7 +78,7 @@
     </section>
 
     <section class="card">
-      <div class="section-title"><span class="step">4</span><div><h2>Fotos (opcional)</h2><p>Se quiser, o PDF cria páginas de registro fotográfico no final.</p></div></div>
+      <div class="section-title"><span class="step">4</span><div><h2>Fotos <span class="optional">opcional</span></h2><p>Se adicionar, elas entram como registro fotográfico no final do PDF.</p></div></div>
       <label class="photo-picker">
         <input id="photoInput" type="file" accept="image/*" multiple capture="environment" />
         <span>📷 Adicionar fotos</span>
@@ -84,7 +87,7 @@
     </section>
 
     <section class="actions card sticky-actions">
-      <button id="previewBtn" class="btn secondary">Visualizar texto</button>
+      <button id="previewBtn" class="btn secondary">Conferir</button>
       <button id="pdfBtn" class="btn primary big">Gerar PDF</button>
     </section>
 
@@ -99,21 +102,21 @@
       </div>
       <div class="grid two">
         <label>Data<input class="activity-date" type="date" /></label>
-        <label>Título (opcional)<input class="activity-title" placeholder="Ex.: Conhecendo as Máquinas de Costura" /></label>
+        <label>Título <span class="optional">opcional</span><input class="activity-title" placeholder="Ex.: Conhecendo as máquinas de costura" /></label>
       </div>
-      <label>Conte do seu jeito
-        <textarea class="activity-raw" rows="4" placeholder="Ex.: Hoje mostrei como colocar o zíper, cada usuário testou... "></textarea>
+      <label>O que aconteceu?
+        <textarea class="activity-raw" rows="4" placeholder="Ex.: Mostrei como colocar o zíper, cada usuário fez um teste no tecido e expliquei os erros mais comuns..."></textarea>
       </label>
       <div class="ai-row">
         <button class="btn mic-btn" type="button">🎙️ Falar</button>
-        <select class="activity-style" aria-label="Estilo do texto">
+        <select class="activity-style" aria-label="Formato do texto">
           <option value="topicos">Tópicos objetivos</option>
           <option value="descritivo">Texto descritivo</option>
         </select>
-        <button class="btn ai-btn" type="button">✨ Organizar com IA</button>
+        <button class="btn ai-btn" type="button">✨ Arrumar meu texto</button>
       </div>
-      <label>Texto que irá para o relatório
-        <textarea class="activity-final" rows="5" placeholder="A IA pode organizar o texto aqui, ou você pode escrever manualmente."></textarea>
+      <label>Texto pronto para o relatório
+        <textarea class="activity-final" rows="5" placeholder="O texto organizado aparecerá aqui. Você pode corrigir qualquer coisa antes de gerar o PDF."></textarea>
       </label>
       <div class="activity-status"></div>
     </article>
