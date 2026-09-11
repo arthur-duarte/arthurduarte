@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f4f6f8" />
+  <meta name="description" content="Gerador mensal de relatórios do SCFV" />
+  <title>Relatório SCFV</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/vfs_fonts.min.js"></script>
+</head>
+<body>
+  <div id="lockScreen" class="lock hidden">
+    <div class="lock-card">
+      <img src="/assets/apias-scfv.png" alt="APIAS SCFV" />
+      <h1>Relatório SCFV</h1>
+      <p>Digite o código de acesso. Você só precisa fazer isso uma vez neste aparelho.</p>
+      <input id="pinInput" inputmode="numeric" autocomplete="one-time-code" placeholder="Código de acesso" />
+      <button id="unlockBtn" class="btn primary big">Entrar</button>
+      <div id="pinError" class="error"></div>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">
+      <img src="/assets/apias-scfv.png" alt="APIAS SCFV" />
+      <div><strong>Relatório SCFV</strong><span>Gerador mensal</span></div>
+    </div>
+    <button id="newMonthBtn" class="btn ghost">Novo mês</button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">RELATÓRIO MENSAL</p>
+        <h1>Preencha só o que mudou.</h1>
+        <p>O sistema salva automaticamente neste aparelho. No fim, toque em <b>Gerar PDF</b>.</p>
+      </div>
+      <div class="save-state" id="saveState">Salvo ✓</div>
+    </section>
+
+    <section class="card">
+      <div class="section-title"><span class="step">1</span><div><h2>Dados do relatório</h2><p>Já deixamos os dados mais comuns preenchidos.</p></div></div>
+      <div class="grid two">
+        <label>Mês<select id="month"></select></label>
+        <label>Ano<input id="year" type="number" min="2024" max="2100" /></label>
+      </div>
+      <label>Modelo da turma
+        <select id="template">
+          <option value="18-59">Apertados de Costura — 18 a 59 anos</option>
+          <option value="60+">Apertados de Costura — 60+</option>
+          <option value="custom">Outro / personalizado</option>
+        </select>
+      </label>
+      <label>Projeto<input id="project" /></label>
+      <label>Oficina<input id="workshop" /></label>
+      <label>Objetivo<textarea id="objective" rows="4"></textarea></label>
+      <label>Responsável<input id="responsible" /></label>
+    </section>
+
+    <section class="card">
+      <div class="section-title"><span class="step">2</span><div><h2>O que aconteceu nas oficinas?</h2><p>Escreva do seu jeito ou use o microfone. A IA organiza o texto.</p></div></div>
+      <div id="activities"></div>
+      <button id="addActivityBtn" class="btn secondary full">＋ Adicionar outra data</button>
+    </section>
+
+    <section class="card">
+      <div class="section-title"><span class="step">3</span><div><h2>Materiais utilizados</h2><p>Marque somente os materiais usados neste mês.</p></div></div>
+      <div id="materials" class="materials"></div>
+      <div class="inline-add">
+        <input id="newMaterial" placeholder="Outro material" />
+        <button id="addMaterialBtn" class="btn ghost">Adicionar</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title"><span class="step">4</span><div><h2>Fotos (opcional)</h2><p>Se quiser, o PDF cria páginas de registro fotográfico no final.</p></div></div>
+      <label class="photo-picker">
+        <input id="photoInput" type="file" accept="image/*" multiple capture="environment" />
+        <span>📷 Adicionar fotos</span>
+      </label>
+      <div id="photoGrid" class="photo-grid"></div>
+    </section>
+
+    <section class="actions card sticky-actions">
+      <button id="previewBtn" class="btn secondary">Visualizar texto</button>
+      <button id="pdfBtn" class="btn primary big">Gerar PDF</button>
+    </section>
+
+    <section id="preview" class="preview hidden"></section>
+  </main>
+
+  <template id="activityTemplate">
+    <article class="activity">
+      <div class="activity-head">
+        <strong class="activity-number">Oficina</strong>
+        <button class="icon-btn remove-activity" aria-label="Excluir atividade">✕</button>
+      </div>
+      <div class="grid two">
+        <label>Data<input class="activity-date" type="date" /></label>
+        <label>Título (opcional)<input class="activity-title" placeholder="Ex.: Conhecendo as Máquinas de Costura" /></label>
+      </div>
+      <label>Conte do seu jeito
+        <textarea class="activity-raw" rows="4" placeholder="Ex.: Hoje mostrei como colocar o zíper, cada usuário testou... "></textarea>
+      </label>
+      <div class="ai-row">
+        <button class="btn mic-btn" type="button">🎙️ Falar</button>
+        <select class="activity-style" aria-label="Estilo do texto">
+          <option value="topicos">Tópicos objetivos</option>
+          <option value="descritivo">Texto descritivo</option>
+        </select>
+        <button class="btn ai-btn" type="button">✨ Organizar com IA</button>
+      </div>
+      <label>Texto que irá para o relatório
+        <textarea class="activity-final" rows="5" placeholder="A IA pode organizar o texto aqui, ou você pode escrever manualmente."></textarea>
+      </label>
+      <div class="activity-status"></div>
+    </article>
+  </template>
+
+  <div id="toast" class="toast"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
